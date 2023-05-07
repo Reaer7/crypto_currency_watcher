@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  postgres_crypto:
+    container_name: postgres_crypto
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "rootroot"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "5439:5439"
+    command:
+      -p 5439
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -p 5439" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  crypto_api:
+    container_name: crypto-api
+    image: crypto-api:1.0
+    build:
+      context: ./watcher/
+      dockerfile: compose.Dockerfile
+    restart: on-failure
+    environment:
+      SERVER_PORT: 9009
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_crypto:5439/postgres
+    ports:
+      - "9009:9009"
+    depends_on:
+      postgres_crypto:
+        condition: service_healthy
+    links:
+      - postgres_crypto
