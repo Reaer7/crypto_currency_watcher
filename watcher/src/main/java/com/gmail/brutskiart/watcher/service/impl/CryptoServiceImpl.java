@@ -53,7 +53,7 @@ public class CryptoServiceImpl implements CryptoService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.NESTED)
+    @Transactional
     public List<CryptoWithPriceDto> saveAll(List<CryptoWithPrice> coins) {
         List<Crypto> cryptos = coins.stream()
                 .map(cryptoMapper::toEntity)

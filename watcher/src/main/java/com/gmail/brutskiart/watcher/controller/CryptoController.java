@@ -1,9 +1,14 @@
 package com.gmail.brutskiart.watcher.controller;
 
-import com.gmail.brutskiart.watcher.exception.SymbolDeniedException;
 import com.gmail.brutskiart.watcher.service.CryptoService;
 import com.gmail.brutskiart.watcher.service.dto.CryptoDto;
 import com.gmail.brutskiart.watcher.service.dto.CryptoWithPriceDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +27,22 @@ import java.util.Set;
         value = "/crypto",
         produces = MediaType.APPLICATION_JSON_VALUE
 )
+@Tag(name = "1. Управление оповещениями пользователей об изменении цены")
 public class CryptoController {
 
     private final CryptoService cryptoService;
 
+    @Operation(summary = "Получить информацию о крипто монетах")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok", content = @Content(examples = {
+                    @ExampleObject(
+                            name = "Получить информацию о крипто монетах",
+                            value = SwaggerConstants.COINS_INFO
+                    )
+            })),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
+    })
     @GetMapping
     public ResponseEntity<Object> getCrypto(@RequestParam(required = false) String symbol) {
         if (symbol != null) {
@@ -38,6 +55,17 @@ public class CryptoController {
         }
     }
 
+    @Operation(summary = "Получить информацию о крипто монете по id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok", content = @Content(examples = {
+                    @ExampleObject(
+                            name = "Получить информацию о крипто монете по id",
+                            value = SwaggerConstants.COIN_INFO
+                    )
+            })),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Object> getCryptoById(@PathVariable Long id) {
         Optional<CryptoWithPriceDto> optionalCrypto = cryptoService.get(id);

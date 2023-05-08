@@ -4,5 +4,5 @@ import com.gmail.brutskiart.watcher.service.dto.UserNotifyDto;
 
 public interface UserService {
 
-    UserNotifyDto post(UserNotifyDto userNotifyDto);
+    UserNotifyDto addNotify(UserNotifyDto userNotifyDto);
 }

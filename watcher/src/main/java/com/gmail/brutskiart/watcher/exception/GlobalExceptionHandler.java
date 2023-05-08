@@ -58,18 +58,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleBindException(
-            BindException ex,
-            HttpHeaders headers,
-            HttpStatusCode status,
-            WebRequest request
-    ) {
-        Map<String, Object> body = getBodyWithErrorAndCode(ex, status);
-        log.error(ex.getMessage());
-        return new ResponseEntity<>(body, headers, status);
-    }
-
-    @Override
     protected ResponseEntity<Object> handleMissingPathVariable(
             MissingPathVariableException ex,
             HttpHeaders headers,

@@ -8,7 +8,6 @@ RUN mvn clean package
 
 FROM openjdk:17-alpine
 WORKDIR /app/
-#ARG JAVA_FILE=target/watcher.jar
 COPY /target/watcher.jar ./
 ENTRYPOINT ["java","-jar","watcher.jar"]
 

@@ -11,5 +11,7 @@ public interface UserNotifyMapper {
     @Mapping(target = "symbol", source = "crypto.symbol")
     UserNotifyDto toDto(UserNotify userNotify);
 
+    @Mapping(target = "crypto.symbol", source = "symbol")
+    @Mapping(target = "priceUsd", ignore = true)
     UserNotify toEntity(UserNotifyDto userNotify);
 }

@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserNotifyDto post(UserNotifyDto userNotifyDto) {
+    public UserNotifyDto addNotify(UserNotifyDto userNotifyDto) {
         String symbol = userNotifyDto.getSymbol();
         Optional<Crypto> optionalCrypto = cryptoDao.findBySymbolIgnoreCase(symbol);
         if (optionalCrypto.isEmpty()) {
