@@ -1,5 +1,6 @@
 package com.gmail.brutskiart.watcher.controller;
 
+import com.gmail.brutskiart.watcher.exception.SymbolDeniedException;
 import com.gmail.brutskiart.watcher.service.CryptoService;
 import com.gmail.brutskiart.watcher.service.dto.CryptoDto;
 import com.gmail.brutskiart.watcher.service.dto.CryptoWithPriceDto;

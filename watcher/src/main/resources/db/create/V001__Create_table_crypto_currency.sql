@@ -1,7 +1,7 @@
-create table crypto_currency
+create table if not exists crypto_currency
 (
     id        bigint,
-    symbol    varchar(10) not null,
-    price_usd float       null,
+    symbol    varchar(20) not null unique,
+    price_usd numeric     null,
     primary key (id)
 );

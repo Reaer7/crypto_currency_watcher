@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
-import static com.gmail.brutskiart.watcher.config.ServerConstants.COIN_SERVER_IDS;
-import static com.gmail.brutskiart.watcher.config.ServerConstants.DATA_KEY;
+import static com.gmail.brutskiart.watcher.service.ServerConstants.COIN_SERVER_IDS;
+import static com.gmail.brutskiart.watcher.service.ServerConstants.DATA_KEY;
 
 @Slf4j
 @Component
@@ -35,9 +35,9 @@ public class CryptoCoinPriceScheduler {
             ResponseEntity<Object> responseEntity = coinLoreRepository.getCoins(COIN_SERVER_IDS);
             if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.hasBody()) {
                 Map<String, Object> body = (Map<String, Object>) responseEntity.getBody();
-                String data = OBJECT_MAPPER.writeValueAsString(body.get(DATA_KEY));
+                Object data = body.get(DATA_KEY);
                 List<CryptoWithPrice> coins = OBJECT_MAPPER.readerForListOf(CryptoWithPrice.class)
-                        .readValue(data);
+                        .readValue(OBJECT_MAPPER.writeValueAsString(data));
                 List<Crypto> cryptos = cryptoService.saveAll(coins);
                 log.debug("Update coin prices succeeded!" + cryptos);
             } else {

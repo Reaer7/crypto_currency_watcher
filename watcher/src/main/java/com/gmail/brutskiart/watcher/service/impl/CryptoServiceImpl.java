@@ -1,5 +1,6 @@
 package com.gmail.brutskiart.watcher.service.impl;
 
+import com.gmail.brutskiart.watcher.exception.SymbolDeniedException;
 import com.gmail.brutskiart.watcher.repository.dao.CryptoDao;
 import com.gmail.brutskiart.watcher.repository.feign.model.CryptoWithPrice;
 import com.gmail.brutskiart.watcher.repository.model.Crypto;
@@ -34,11 +35,10 @@ public class CryptoServiceImpl implements CryptoService {
     @Override
     public Optional<CryptoDto> get(String symbol) {
         Optional<Crypto> optionalCrypto = cryptoDao.findBySymbolIgnoreCase(symbol);
-        if (optionalCrypto.isPresent()) {
-            return optionalCrypto.map(cryptoMapper::toDto);
-        } else {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(
+                optionalCrypto.map(cryptoMapper::toDto)
+                        .orElseThrow(SymbolDeniedException::new)
+        );
     }
 
     @Override

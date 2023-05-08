@@ -1,4 +1,4 @@
-package com.gmail.brutskiart.watcher.config;
+package com.gmail.brutskiart.watcher.service;
 
 import lombok.experimental.UtilityClass;
 
