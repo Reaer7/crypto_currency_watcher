@@ -10,6 +10,7 @@ import com.gmail.brutskiart.watcher.service.dto.CryptoWithPriceDto;
 import com.gmail.brutskiart.watcher.service.mapper.CryptoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -52,11 +53,14 @@ public class CryptoServiceImpl implements CryptoService {
     }
 
     @Override
-    @Transactional
-    public List<Crypto> saveAll(List<CryptoWithPrice> coins) {
+    @Transactional(propagation = Propagation.NESTED)
+    public List<CryptoWithPriceDto> saveAll(List<CryptoWithPrice> coins) {
         List<Crypto> cryptos = coins.stream()
                 .map(cryptoMapper::toEntity)
                 .toList();
-        return cryptoDao.saveAll(cryptos);
+        return cryptoDao.saveAllAndFlush(cryptos)
+                .stream()
+                .map(cryptoMapper::toWithPriceDto)
+                .toList();
     }
 }

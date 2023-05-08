@@ -34,7 +34,7 @@ public class UserNotify {
 
     @OneToOne(
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.MERGE, CascadeType.DETACH}
+            cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH}
     )
     @JoinColumn(name = "crypto_id", nullable = false)
     private Crypto crypto;

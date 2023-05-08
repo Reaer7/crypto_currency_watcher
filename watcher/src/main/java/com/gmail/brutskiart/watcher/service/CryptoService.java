@@ -1,7 +1,6 @@
 package com.gmail.brutskiart.watcher.service;
 
 import com.gmail.brutskiart.watcher.repository.feign.model.CryptoWithPrice;
-import com.gmail.brutskiart.watcher.repository.model.Crypto;
 import com.gmail.brutskiart.watcher.service.dto.CryptoDto;
 import com.gmail.brutskiart.watcher.service.dto.CryptoWithPriceDto;
 
@@ -17,5 +16,5 @@ public interface CryptoService {
 
     Optional<CryptoWithPriceDto> get(Long id);
 
-    List<Crypto> saveAll(List<CryptoWithPrice> coins);
+    List<CryptoWithPriceDto> saveAll(List<CryptoWithPrice> coins);
 }

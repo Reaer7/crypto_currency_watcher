@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserNotify getUserNotify(UserNotifyDto userNotifyDto, Crypto crypto) {
-        Optional<UserNotify> optionalUserNotify = userNotifyDao.findByUsernameAndCrypto_SymbolAllIgnoreCase(
+        Optional<UserNotify> optionalUserNotify = userNotifyDao.findByUsernameAndCryptoSymbolAllIgnoreCase(
                 userNotifyDto.getUsername(),
                 userNotifyDto.getSymbol()
         );
