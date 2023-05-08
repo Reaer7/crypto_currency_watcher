@@ -1,14 +1,15 @@
 package com.gmail.brutskiart.watcher.service.impl;
 
 import com.gmail.brutskiart.watcher.repository.dao.CryptoDao;
-import com.gmail.brutskiart.watcher.repository.feign.CoinLoreRepository;
+import com.gmail.brutskiart.watcher.repository.feign.model.CryptoWithPrice;
 import com.gmail.brutskiart.watcher.repository.model.Crypto;
 import com.gmail.brutskiart.watcher.service.CryptoService;
-import com.gmail.brutskiart.watcher.service.mapper.CryptoMapper;
 import com.gmail.brutskiart.watcher.service.dto.CryptoDto;
 import com.gmail.brutskiart.watcher.service.dto.CryptoWithPriceDto;
+import com.gmail.brutskiart.watcher.service.mapper.CryptoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,6 @@ public class CryptoServiceImpl implements CryptoService {
 
     private final CryptoDao cryptoDao;
     private final CryptoMapper cryptoMapper;
-    private final CoinLoreRepository coinLoreRepository;
 
     @Override
     public Set<CryptoDto> get() {
@@ -49,5 +49,14 @@ public class CryptoServiceImpl implements CryptoService {
         } else {
             return Optional.empty();
         }
+    }
+
+    @Override
+    @Transactional
+    public List<Crypto> saveAll(List<CryptoWithPrice> coins) {
+        List<Crypto> cryptos = coins.stream()
+                .map(cryptoMapper::toEntity)
+                .toList();
+        return cryptoDao.saveAll(cryptos);
     }
 }
